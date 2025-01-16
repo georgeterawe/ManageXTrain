@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 function App() {
-  const message = 'Hello, world'
+  const message = 'Hello, world';
 
   return (
     <div style={{ padding: '16px' }}>
