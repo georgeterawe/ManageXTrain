@@ -1,0 +1,26 @@
+{
+    "name": "managex",
+    "version": "1.0.0",
+    "description": "ModularApp is a project that demonstrates how to set up a scalable, modular backend in .NET Core with MongoDB and a modern frontend using React. The project includes features such as MongoDB connectivity, API routing, and clean code practices with ESLint and Prettier.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepare": "husky install"
+    },
+    "author": "",
+    "license": "ISC",
+    "keywords": [],
+    "devDependencies": {
+        "husky": "^9.1.7",
+        "lint-staged": "^15.4.0"
+    },
+    "lint-staged": {
+        "frontend/**/*.{js,jsx,ts,tsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "backend/**/*.{cs}": [
+            "dotnet-format"
+        ]
+    }
+}

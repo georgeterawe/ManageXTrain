@@ -1,3 +1,4 @@
+node_modules/
 # Ignore node_modules in frontend
 frontend/node_modules/
 
@@ -25,3 +26,7 @@ backend/ModularApp/**/bin/
 
 # Ignore configuration files
 backend/.env
+
+
+.husky/
+
