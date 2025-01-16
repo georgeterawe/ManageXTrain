@@ -1,0 +1,134 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Modules.Users\\ModularApp.Modules.Users.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Core\\ModularApp.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Core\\ModularApp.Core.csproj",
+        "projectName": "ModularApp.Core",
+        "projectPath": "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Core\\ModularApp.Core.csproj",
+        "packagesPath": "C:\\Users\\GeorgePTharakan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Core\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\GeorgePTharakan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Modules.Users\\ModularApp.Modules.Users.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Modules.Users\\ModularApp.Modules.Users.csproj",
+        "projectName": "ModularApp.Modules.Users",
+        "projectPath": "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Modules.Users\\ModularApp.Modules.Users.csproj",
+        "packagesPath": "C:\\Users\\GeorgePTharakan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Modules.Users\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\GeorgePTharakan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Core\\ModularApp.Core.csproj": {
+                "projectPath": "C:\\Users\\GeorgePTharakan\\Desktop\\managex\\backend\\ModularApp\\ModularApp.Core\\ModularApp.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

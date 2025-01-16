@@ -1,0 +1,27 @@
+# Ignore node_modules in frontend
+frontend/node_modules/
+
+# Ignore build directories for React frontend
+frontend/build/
+
+# Ignore environment files
+frontend/.env
+
+# Ignore the obj and bin directories for .NET Core
+backend/obj/
+backend/bin/
+
+# Ignore Visual Studio and OS-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+.vs/
+.vscode/
+.idea/
+
+# Ignore logs
+*.log
+
+# Ignore configuration files
+backend/.env

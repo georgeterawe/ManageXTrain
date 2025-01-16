@@ -1,0 +1,15 @@
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\bin\Debug\net8.0\ModularApp.Modules.Logging.deps.json
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\bin\Debug\net8.0\ModularApp.Modules.Logging.dll
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\bin\Debug\net8.0\ModularApp.Modules.Logging.pdb
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\bin\Debug\net8.0\ModularApp.Core.dll
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\bin\Debug\net8.0\ModularApp.Core.pdb
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularApp.Modules.Logging.csproj.AssemblyReference.cache
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularApp.Modules.Logging.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularApp.Modules.Logging.AssemblyInfoInputs.cache
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularApp.Modules.Logging.AssemblyInfo.cs
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularApp.Modules.Logging.csproj.CoreCompileInputs.cache
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularA.797C37CD.Up2Date
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularApp.Modules.Logging.dll
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\refint\ModularApp.Modules.Logging.dll
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ModularApp.Modules.Logging.pdb
+C:\Users\GeorgePTharakan\Desktop\managex\backend\ModularApp\ModularApp.Modules.Logging\obj\Debug\net8.0\ref\ModularApp.Modules.Logging.dll
