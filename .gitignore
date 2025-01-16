@@ -7,9 +7,9 @@ frontend/build/
 # Ignore environment files
 frontend/.env
 
-# Ignore the obj and bin directories for .NET Core
-backend/obj/
-backend/bin/
+# Ignore the obj and bin directories for .NET Core in all ModularApp subfolders
+backend/ModularApp/**/obj/
+backend/ModularApp/**/bin/
 
 # Ignore Visual Studio and OS-specific files
 *.user
