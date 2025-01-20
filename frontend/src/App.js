@@ -1,19 +1,27 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { theme } from './theme/theme';
+import HomePage from './pages/public/HomePage';
+import LoginPage from './pages/public/LoginPage';
+import SignUpPage from './pages/public/SignUpPage';
+import RequestResetPage from './pages/public/RequestResetPage';
+import ResetPasswordPage from './pages/public/ResetPasswordPage';
 
 function App() {
-  const message = 'Hello, world';
-
   return (
-    <div style={{ padding: '16px' }}>
-      <Typography variant="h1" color="primary">
-        Welcome to My App
-      </Typography>
-      <Button variant="contained" color="primary">
-        Click Me
-      </Button>
-    </div>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/reset-password" element={<RequestResetPage />} />
+          <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
 

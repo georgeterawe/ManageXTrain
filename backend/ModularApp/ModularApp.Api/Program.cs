@@ -25,6 +25,8 @@ builder.Services.AddSingleton(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
+builder.Services.AddControllers();// Add controllers
+
 // Add services to the container (including Swagger)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -53,6 +55,8 @@ if (app.Environment.IsDevelopment())
     // });
 }
 app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
 
 // Example endpoint to test MongoDB connection
 app.MapGet("/test-mongo", async (IMongoDatabase database) =>

@@ -25,7 +25,10 @@
             "prettier --write"
         ],
         "backend/**/*.{cs}": [
-            "dotnet-format backend/ModularApp/ModularApp.Api/ModularApp.Api.csproj"
+            "dotnet-format backend/ModularApp/ModularApp.Api/ModularApp.Api.csproj --include"
         ]
+    },
+    "dependencies": {
+        "react-hook-form": "^7.54.2"
     }
 }
