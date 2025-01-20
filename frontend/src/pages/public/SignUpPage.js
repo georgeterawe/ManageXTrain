@@ -12,10 +12,10 @@ const SignUpPage = () => {
   } = useForm();
   const [error, setError] = useState('');
 
-  const password = watch('password', ''); // Used for password confirmation validation
+  const password = watch('password', '');
 
   const onSubmit = (data) => {
-    console.log(data); // We'll integrate with API later
+    console.log(data);
   };
 
   return (

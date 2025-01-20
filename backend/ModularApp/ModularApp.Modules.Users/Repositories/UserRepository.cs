@@ -29,8 +29,18 @@ public class UserRepository : IUserRepository
         return await _users.Find(u => u.Email == email).FirstOrDefaultAsync();
     }
 
+    public async Task AddUserAsync(User user)
+    {
+        await _users.InsertOneAsync(user);
+    }
+
     public async Task CreateUserAsync(User user)
     {
+        if (await _users.Find(u => u.Username == user.Username || u.Email == user.Email).AnyAsync())
+        {
+             throw new InvalidOperationException("User with the same username or email already exists.");
+        }
+
         await _users.InsertOneAsync(user);
     }
 }

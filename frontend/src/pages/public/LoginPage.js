@@ -12,7 +12,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
 
   const onSubmit = (data) => {
-    console.log(data); // We'll integrate with API later
+    console.log(data);
   };
 
   return (
