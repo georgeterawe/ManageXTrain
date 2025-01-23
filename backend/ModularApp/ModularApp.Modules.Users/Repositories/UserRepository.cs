@@ -14,10 +14,10 @@ public class UserRepository : IUserRepository
         _users = database.GetCollection<User>("Users");
     }
 
-    public async Task<User> GetUserByIdAsync(string id)
-    {
-        return await _users.Find(u => u.Id == id).FirstOrDefaultAsync();
-    }
+    // public async Task<User> GetUserByIdAsync(string id)
+    // {
+    //     return await _users.Find(u => u.Id == id).FirstOrDefaultAsync();
+    // }
 
     public async Task<User> GetUserByUsernameAsync(string username)
     {

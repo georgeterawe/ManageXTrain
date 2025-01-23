@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography, Container, Link, Alert } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import api from '../../services/api';
 
 const LoginPage = () => {
   const {
@@ -10,9 +11,26 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    setIsLoading(true);
+    try {
+      const response = await api.post('/auth/login', data);
+      console.log('Login successful:', response.data);
+      localStorage.setItem('token', response.data.token);
+
+      setSuccessMessage('Login successful! Redirecting to home...');
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -24,6 +42,11 @@ const LoginPage = () => {
         {error && (
           <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
             {error}
+          </Alert>
+        )}
+        {successMessage && (
+          <Alert severity="success" sx={{ width: '100%', mb: 2 }}>
+            {successMessage}
           </Alert>
         )}
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1, width: '100%' }}>
