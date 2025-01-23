@@ -24,9 +24,9 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> AuthenticateUserAsync(string username, string password)
+    public async Task<User> AuthenticateUserAsync(string email, string password)
     {
-        var user = await _userRepository.GetUserByUsernameAsync(username);
+        var user = await _userRepository.GetUserByEmailAsync(email);
 
         if (user == null || !VerifyPassword(password, user.PasswordHash))
             return null;
