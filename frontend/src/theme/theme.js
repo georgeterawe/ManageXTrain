@@ -56,6 +56,7 @@ export const theme = createTheme({
         root: {
           borderRadius: 8,
           padding: '8px 16px',
+          margin: '16px 0px',
         },
       },
     },

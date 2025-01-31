@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// import { AiFillAlipaySquare } from "react-icons/ai";
 
 function TestError() {
   const [hasError, setHasError] = useState(false);
@@ -12,7 +13,12 @@ function TestError() {
     throw new Error('Test error!');
   }
 
-  return <button onClick={throwError}>Throw Error</button>;
+  return (
+    <>
+      {/* <AiFillAlipaySquare /> */}
+      <button onClick={throwError}>Throw Error</button>
+    </>
+  );
 }
 
 export default TestError;

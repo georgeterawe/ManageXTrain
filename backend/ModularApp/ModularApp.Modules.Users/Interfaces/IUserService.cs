@@ -7,4 +7,10 @@ public interface IUserService
 {
     Task<User> RegisterUserAsync(User user);
     Task<User> AuthenticateUserAsync(string username, string password);
+    Task<string> GeneratePasswordResetTokenAsync(string email);
+    Task ResetPasswordAsync(string token, string newPassword);
+    Task<User> FindByEmailAsync(string email);
+    Task SaveResetTokenAsync(string userId, string resetToken);
+    Task<User> ValidateResetTokenAsync(string token);
+    Task UpdatePasswordAsync(string userId, string newPassword);
 }

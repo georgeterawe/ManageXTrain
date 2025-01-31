@@ -43,4 +43,64 @@ public class UserService : IUserService
     {
         return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
     }
+    public async Task<string> GeneratePasswordResetTokenAsync(string email)
+    {
+        var user = await _userRepository.GetUserByEmailAsync(email);
+        if (user == null)
+            return null;
+
+        // Generate a secure token
+        string resetToken = Convert.ToBase64String(System.Security.Cryptography.RandomNumberGenerator.GetBytes(32));
+
+        // Set token and expiration
+        user.ResetToken = resetToken;
+        user.ResetTokenExpiration = DateTime.UtcNow.AddHours(1);
+
+        await _userRepository.UpdateUserAsync(user);
+
+        return resetToken;
+    }
+
+    public async Task ResetPasswordAsync(string token, string newPassword)
+    {
+        var user = await _userRepository.GetUserByResetTokenAsync(token);
+
+        if (user == null)
+            throw new InvalidOperationException("Invalid or expired reset token");
+
+        // Update password
+        user.PasswordHash = HashPassword(newPassword);
+
+        // Clear reset token
+        user.ResetToken = null;
+        user.ResetTokenExpiration = null;
+
+        await _userRepository.UpdateUserAsync(user);
+    }
+    public async Task<User> FindByEmailAsync(string email)
+    {
+        return await _userRepository.GetUserByEmailAsync(email);
+    }
+
+    public async Task SaveResetTokenAsync(string userId, string resetToken)
+    {
+        var user = await _userRepository.GetUserByIdAsync(userId);
+        user.ResetToken = resetToken;
+        user.ResetTokenExpiration = DateTime.UtcNow.AddHours(1);
+        await _userRepository.UpdateUserAsync(user);
+    }
+
+    public async Task<User> ValidateResetTokenAsync(string token)
+    {
+        return await _userRepository.GetUserByResetTokenAsync(token);
+    }
+
+    public async Task UpdatePasswordAsync(string userId, string newPassword)
+    {
+        var user = await _userRepository.GetUserByIdAsync(userId);
+        user.PasswordHash = HashPassword(newPassword);
+        user.ResetToken = null;
+        user.ResetTokenExpiration = null;
+        await _userRepository.UpdateUserAsync(user);
+    }
 }

@@ -13,4 +13,7 @@ public class User
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public string Title { get; set; }
+
+    public string? ResetToken { get; set; }
+    public DateTime? ResetTokenExpiration { get; set; }
 }

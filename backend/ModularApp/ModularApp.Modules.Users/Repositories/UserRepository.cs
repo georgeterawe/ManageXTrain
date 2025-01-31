@@ -14,10 +14,10 @@ public class UserRepository : IUserRepository
         _users = database.GetCollection<User>("Users");
     }
 
-    // public async Task<User> GetUserByIdAsync(string id)
-    // {
-    //     return await _users.Find(u => u.Id == id).FirstOrDefaultAsync();
-    // }
+    public async Task<User> GetUserByIdAsync(string id)
+    {
+        return await _users.Find(u => u.Id == id).FirstOrDefaultAsync();
+    }
 
     public async Task<User> GetUserByUsernameAsync(string username)
     {
@@ -38,9 +38,20 @@ public class UserRepository : IUserRepository
     {
         if (await _users.Find(u => u.Username == user.Username || u.Email == user.Email).AnyAsync())
         {
-             throw new InvalidOperationException("User with the same username or email already exists.");
+            throw new InvalidOperationException("User with the same username or email already exists.");
         }
 
         await _users.InsertOneAsync(user);
+    }
+
+    public async Task UpdateUserAsync(User user)
+    {
+        await _users.ReplaceOneAsync(u => u.Id == user.Id, user);
+    }
+
+    public async Task<User> GetUserByResetTokenAsync(string resetToken)
+    {
+        return await _users.Find(u => u.ResetToken == resetToken
+            && u.ResetTokenExpiration > DateTime.UtcNow).FirstOrDefaultAsync();
     }
 }

@@ -6,6 +6,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Security.Cryptography;
+using System.ComponentModel.DataAnnotations;
 
 namespace ModularApp.Api.Controllers
 {
@@ -71,6 +73,52 @@ namespace ModularApp.Api.Controllers
                 return BadRequest(new { Message = "Login failed: " + ex.Message });
             }
         }
+        [HttpPost("request-password-reset")]
+        public async Task<IActionResult> RequestPasswordReset([FromBody] RequestPasswordResetDto request)
+        {
+            // 1. Validate email
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // 2. Find user by email
+            var user = await _userService.FindByEmailAsync(request.Email);
+            if (user == null)
+                return Ok(); // Prevent email enumeration
+
+            // 3. Generate reset token
+            var resetToken = GenerateResetToken();
+
+            // 4. Save token with expiration
+            await _userService.SaveResetTokenAsync(user.Id, resetToken);
+
+            // 5. Send reset email (you'll implement email service)
+            // await _emailService.SendPasswordResetEmail(user.Email, resetToken);
+
+            return Ok();
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto request)
+        {
+            // 1. Validate input
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // 2. Validate token
+            var user = await _userService.ValidateResetTokenAsync(request.Token);
+            if (user == null)
+                return BadRequest("Invalid or expired token");
+
+            // 3. Update password
+            await _userService.UpdatePasswordAsync(user.Id, request.NewPassword);
+
+            return Ok();
+        }
+
+        private string GenerateResetToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+        }
 
         private string GenerateJwtToken(User user)
         {
@@ -99,5 +147,23 @@ namespace ModularApp.Api.Controllers
     {
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+
+    public class RequestPasswordResetDto
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+    }
+
+    public class ResetPasswordDto
+    {
+        [Required]
+        public string Token { get; set; }
+
+        [Required]
+        [MinLength(8)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$")]
+        public string NewPassword { get; set; }
     }
 }
