@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = axios.create({
+const managexAxios = axios.create({
   baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5012/api',
   headers: {
     'Content-Type': 'application/json',
@@ -8,7 +8,7 @@ const api = axios.create({
 });
 
 // Request interceptor for adding auth token
-api.interceptors.request.use(
+managexAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -22,7 +22,7 @@ api.interceptors.request.use(
 );
 
 // Response interceptor for handling errors
-api.interceptors.response.use(
+managexAxios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response) {
@@ -38,4 +38,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default managexAxios;
