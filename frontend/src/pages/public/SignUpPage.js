@@ -8,10 +8,10 @@ import {
   Container,
   Link,
   Alert,
-  Grid,
   IconButton,
   InputAdornment,
 } from '@mui/material';
+import Grid from '@mui/material/Grid';
 import { Link as RouterLink } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { SignUpPageContent } from '../../Content/SignUpPage';
@@ -52,7 +52,7 @@ const SignUpPage = () => {
         Title: data.title,
         PasswordHash: data.password,
       };
-      const response = await api.post('/auth/signup', userData);
+      const response = await managexAxios.post('/auth/signup', userData);
       console.log('Sign-up successful:', response.data);
       setSuccessMessage('Sign-up successful! Redirecting to login...');
       setTimeout(() => {

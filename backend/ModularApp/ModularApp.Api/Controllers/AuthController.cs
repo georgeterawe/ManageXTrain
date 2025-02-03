@@ -106,6 +106,7 @@ namespace ModularApp.Api.Controllers
 
             // 2. Validate token
             var user = await _userService.ValidateResetTokenAsync(request.Token);
+            Console.WriteLine(user);
             if (user == null)
                 return BadRequest("Invalid or expired token");
 
