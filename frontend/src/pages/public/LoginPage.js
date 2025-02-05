@@ -24,26 +24,30 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // src/pages/public/LoginPage.js
   const onSubmit = async (data) => {
     setIsLoading(true);
     setError('');
     setSuccessMessage('');
-
+    console.log(data);
     try {
       const response = await managexAxios.post('/auth/login', data);
       const { token, user } = response.data;
 
-      // Save token to localStorage
+      // Set token expiration to 1 minute from now
+      const expiresIn = 60; // 1 minute in seconds
+      const tokenExpiration = Date.now() + expiresIn * 1000;
+
+      // Save token and expiration time to localStorage
       localStorage.setItem('token', token);
+      localStorage.setItem('tokenExpiration', tokenExpiration);
 
       // Update Redux state
-      dispatch(login({ user, token }));
+      dispatch(login({ user, token, tokenExpiration }));
 
       // Show success message and redirect
-      setSuccessMessage('Login successful! Redirecting to home...');
+      setSuccessMessage('Login successful! Redirecting to dashboard...');
       setTimeout(() => {
-        navigate('/Dashboard'); // Use navigate instead of window.location.href
+        navigate('/dashboard');
       }, 2000);
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');

@@ -13,4 +13,10 @@ public interface IUserService
     Task SaveResetTokenAsync(string userId, string resetToken);
     Task<User> ValidateResetTokenAsync(string token);
     Task UpdatePasswordAsync(string userId, string newPassword);
+
+    // Task<IEnumerable<User>> AllUsersAsync();
+
+    Task<IEnumerable<User>> GetPaginatedUsersAsync(int page, int limit);
+    Task<long> GetTotalUserCountAsync();
+
 }

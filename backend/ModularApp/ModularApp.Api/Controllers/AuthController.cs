@@ -97,6 +97,24 @@ namespace ModularApp.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("user-list")]
+        public async Task<IActionResult> GetUserList(int page = 1, int limit = 10)
+        {
+            if (page < 1 || limit < 1)
+            {
+                return BadRequest("Page and limit must be greater than 0.");
+            }
+
+            var users = await _userService.GetPaginatedUsersAsync(page, limit);
+            var totalUsers = await _userService.GetTotalUserCountAsync();
+
+            return Ok(new
+            {
+                data = users,
+                total = totalUsers
+            });
+        }
+
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto request)
         {
