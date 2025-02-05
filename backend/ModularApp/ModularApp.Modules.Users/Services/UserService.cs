@@ -20,6 +20,8 @@ public class UserService : IUserService
         // Hash the password before saving
         user.PasswordHash = HashPassword(user.PasswordHash);
 
+
+
         await _userRepository.CreateUserAsync(user);
         return user;
     }
@@ -103,4 +105,15 @@ public class UserService : IUserService
         user.ResetTokenExpiration = null;
         await _userRepository.UpdateUserAsync(user);
     }
+
+    public async Task<IEnumerable<User>> GetPaginatedUsersAsync(int page, int limit)
+    {
+        return await _userRepository.GetUsersPaginatedAsync(page, limit);
+    }
+
+    public async Task<long> GetTotalUserCountAsync()
+    {
+        return await _userRepository.GetTotalUsersAsync();
+    }
+
 }

@@ -1,12 +1,16 @@
-// src/app/store.js
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/authSlice';
+import layoutReducer from '../features/layoutSlice';
+import { checkTokenExpiration } from '../middleware/checkTokenExpiration'; // Import the middleware
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
+    layout: layoutReducer,
   },
-  devTools: process.env.NODE_ENV !== 'production', // Enable DevTools in development
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware().concat(checkTokenExpiration),
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export default store;

@@ -13,7 +13,8 @@ import NotFoundPage from './pages/public/NotFoundPage';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './pages/private/Dashboard';
 import AboutPage from './pages/private/About';
-import Profile from './pages/private/Profile';
+import UserListTable from './pages/private/UserListTable';
+import ProfilePage from './pages/private/ProfilePage';
 
 function App() {
   return (
@@ -29,9 +30,11 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             {/* Protected Routes */}
             <Route element={<PrivateRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/dashboard" element={<Dashboard />}>
+                <Route path="about" element={<AboutPage />} />
+                <Route path="users" element={<UserListTable />} />
+              </Route>
+              <Route path="/profile" element={<ProfilePage />} />
             </Route>
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

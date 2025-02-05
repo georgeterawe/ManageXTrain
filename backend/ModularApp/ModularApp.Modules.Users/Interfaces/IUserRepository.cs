@@ -15,4 +15,8 @@ public interface IUserRepository
 
     Task UpdateUserAsync(User user);
     Task<User> GetUserByResetTokenAsync(string resetToken);
+
+    // Task<IEnumerable<User>> GetUsersAsync();
+    Task<IEnumerable<User>> GetUsersPaginatedAsync(int page, int limit);
+    Task<long> GetTotalUsersAsync();
 }

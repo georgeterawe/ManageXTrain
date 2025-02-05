@@ -40,7 +40,6 @@ public class UserRepository : IUserRepository
         {
             throw new InvalidOperationException("User with the same username or email already exists.");
         }
-
         await _users.InsertOneAsync(user);
     }
 
@@ -54,4 +53,18 @@ public class UserRepository : IUserRepository
         return await _users.Find(u => u.ResetToken == resetToken
             && u.ResetTokenExpiration > DateTime.UtcNow).FirstOrDefaultAsync();
     }
+
+    public async Task<IEnumerable<User>> GetUsersPaginatedAsync(int page, int limit)
+    {
+        return await _users.Find(_ => true)
+                           .Skip((page - 1) * limit)
+                           .Limit(limit)
+                           .ToListAsync();
+    }
+
+    public async Task<long> GetTotalUsersAsync()
+    {
+        return await _users.CountDocumentsAsync(_ => true);
+    }
+
 }

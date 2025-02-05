@@ -2,16 +2,24 @@ import React from 'react';
 import { Box } from '@mui/material';
 import SideMenu from '../../components/SideMenu';
 import HeaderBar from '../../components/HeaderBar';
-import UserListTable from './UserListTable';
+import { Outlet } from 'react-router-dom';
 
 const Dashboard = () => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <SideMenu />
-      <Box sx={{ flexGrow: 1 }}>
-        <HeaderBar />
-        <Box sx={{ p: 3 }}>
-          <UserListTable />
+    <Box height="100vh" display="flex" flexDirection="column">
+      <HeaderBar />
+
+      <Box display="flex" flex="1">
+        <Box>
+          <SideMenu />
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+          }}
+        >
+          <Outlet />
         </Box>
       </Box>
     </Box>
