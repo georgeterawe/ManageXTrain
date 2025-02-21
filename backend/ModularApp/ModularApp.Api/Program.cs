@@ -2,12 +2,16 @@ using ModularApp.Core.Configurations;
 using ModularApp.Modules.Users.Interfaces;
 using ModularApp.Modules.Users.Repositories;
 using ModularApp.Modules.Users.Services;
+using ModularApp.Modules.Email.Interfaces;
+using ModularApp.Modules.Email.Models;
+using ModularApp.Modules.Email.Services;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +36,14 @@ builder.Services.AddSingleton(sp =>
 // Register UserRepository and UserService
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Add these lines to Program.cs
+builder.Services.AddScoped<IUserSessionRepository, UserSessionRepository>();
+builder.Services.AddScoped<IUserSessionService, UserSessionService>();
+
+builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("Email"));
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 // Add controllers
 builder.Services.AddControllers();

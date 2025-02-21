@@ -31,15 +31,16 @@ const LoginPage = () => {
     console.log(data);
     try {
       const response = await managexAxios.post('/auth/login', data);
-      const { token, user } = response.data;
+      const { token, user, sessionId } = response.data;
 
       // Set token expiration to 1 minute from now
       const expiresIn = 60; // 1 minute in seconds
       const tokenExpiration = Date.now() + expiresIn * 1000;
 
       // Save token and expiration time to localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('tokenExpiration', tokenExpiration);
+      localStorage.setItem('token1', token);
+      localStorage.setItem('tokenExpiration1', tokenExpiration);
+      localStorage.setItem('sessionId', sessionId);
 
       // Update Redux state
       dispatch(login({ user, token, tokenExpiration }));

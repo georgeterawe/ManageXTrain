@@ -19,6 +19,7 @@
     <ProjectReference Include="..\ModularApp.Core\ModularApp.Core.csproj" />
     <ProjectReference Include="..\ModularApp.Modules.Users\ModularApp.Modules.Users.csproj" />
     <ProjectReference Include="..\ModularApp.Modules.Logging\ModularApp.Modules.Logging.csproj" />
+    <ProjectReference Include="..\ModularApp.Modules.Email\ModularApp.Modules.Email.csproj" />
   </ItemGroup>
 
 </Project>
