@@ -1,85 +1,75 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Box, Typography, Avatar, Container, Paper, Grid, Divider, Button } from '@mui/material';
+import { Typography, Avatar, Container, Grid, Divider, Button } from '@mui/material';
 import { Email, LocationOn, CalendarToday } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+import ProfileAvatarWrapper from '../../components/common/ProfileAvatarWrapper';
+import ProfileCard from '../../components/common/ProfileCard';
+import ProfileContainer from '../../components/common/ProfileContainer';
+import ProfileInfoItem from '../../components/common/ProfileInfoItem';
+import ProfileStyledAvatar from '../../components/common/ProfileStyledAvatar';
+import ProfileIconWrapper from '../../components/common/ProfileIconWrapper';
+import ProfileUserInfoWrapper from '../../components/common/ProfileUserInfoWrapper';
+import ProfileHeaderBackground from '../../components/common/ProfileHeaderBackground';
+import StyledDivider from '../../components/common/StyledDivider';
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.auth.user);
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-        {/* Header Section */}
-        <Box
-          sx={{
-            height: 200,
-            bgcolor: 'primary.main',
-            borderRadius: '16px 16px 0 0',
-            mb: -10,
-            position: 'relative',
-            top: -32,
-            left: -32,
-            width: 'calc(100% + 64px)',
-          }}
-        />
-
-        {/* Profile Content */}
+    <ProfileContainer maxWidth="md">
+      <ProfileCard>
+        <ProfileHeaderBackground />
         <Grid container spacing={3}>
-          {/* Left Column - Avatar */}
           <Grid item xs={12} md={4}>
-            <Box sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
-              <Avatar
-                src={user?.profilePic || ''}
-                sx={{
-                  width: 150,
-                  height: 150,
-                  mx: 'auto',
-                  border: '4px solid white',
-                  boxShadow: 2,
-                  fontSize: 50,
-                }}
-              >
+            <ProfileAvatarWrapper>
+              <ProfileStyledAvatar src={user?.profilePic || ''}>
                 {!user?.profilePic && user?.username?.charAt(0).toUpperCase()}
-              </Avatar>
-            </Box>
+              </ProfileStyledAvatar>
+            </ProfileAvatarWrapper>
           </Grid>
 
-          {/* Right Column - User Info */}
           <Grid item xs={12} md={8}>
-            <Box sx={{ pl: { md: 2 } }}>
+            <ProfileUserInfoWrapper>
               <Typography variant="h4" fontWeight="bold" gutterBottom>
                 {user?.username || 'Username'}
               </Typography>
 
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, color: 'text.secondary' }}>
-                <Email sx={{ mr: 1, fontSize: 20 }} />
+              <ProfileInfoItem>
+                <ProfileIconWrapper>
+                  <Email />
+                </ProfileIconWrapper>
                 <Typography variant="body1">{user?.email || 'Email Address'}</Typography>
-              </Box>
+              </ProfileInfoItem>
 
               {user?.location && (
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, color: 'text.secondary' }}>
-                  <LocationOn sx={{ mr: 1, fontSize: 20 }} />
+                <ProfileInfoItem>
+                  <ProfileIconWrapper>
+                    <LocationOn />
+                  </ProfileIconWrapper>
                   <Typography variant="body1">{user.location}</Typography>
-                </Box>
+                </ProfileInfoItem>
               )}
 
               {user?.joinDate && (
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, color: 'text.secondary' }}>
-                  <CalendarToday sx={{ mr: 1, fontSize: 20 }} />
+                <ProfileInfoItem>
+                  <ProfileIconWrapper>
+                    <CalendarToday />
+                  </ProfileIconWrapper>
                   <Typography variant="body1">Joined {user.joinDate}</Typography>
-                </Box>
+                </ProfileInfoItem>
               )}
 
-              <Divider sx={{ my: 2 }} />
+              <StyledDivider />
 
               <Typography variant="body1" color="text.secondary">
                 {user?.bio || 'No bio available'}
               </Typography>
-            </Box>
+            </ProfileUserInfoWrapper>
           </Grid>
         </Grid>
-      </Paper>
-    </Container>
+      </ProfileCard>
+    </ProfileContainer>
   );
 };
 

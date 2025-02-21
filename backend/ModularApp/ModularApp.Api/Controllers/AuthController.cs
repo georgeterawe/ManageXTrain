@@ -2,12 +2,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ModularApp.Modules.Users.Interfaces;
 using ModularApp.Modules.Users.Models;
+using ModularApp.Modules.Email.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Security.Cryptography;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ModularApp.Api.Controllers
 {
@@ -17,11 +19,16 @@ namespace ModularApp.Api.Controllers
     {
         private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
+        private readonly IUserSessionService _sessionService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IUserService userService, IConfiguration configuration)
+        public AuthController(IUserService userService, IConfiguration configuration, IUserSessionService _sessionService,
+            IEmailService emailService)
         {
             _userService = userService;
             _configuration = configuration;
+            this._sessionService = _sessionService;
+            _emailService = emailService;
         }
 
         [HttpPost("signup")]
@@ -52,6 +59,28 @@ namespace ModularApp.Api.Controllers
             }
         }
 
+        // [HttpPost("login")]
+        // public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        // {
+        //     try
+        //     {
+        //         Console.WriteLine($"Received login request: {JsonSerializer.Serialize(request)}");
+
+        //         var user = await _userService.AuthenticateUserAsync(request.Email, request.Password);
+
+        //         if (user == null)
+        //             return Unauthorized(new { Message = "Invalid username or password" });
+
+        //         var token = GenerateJwtToken(user);
+
+        //         return Ok(new { Token = token, User = user });
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return BadRequest(new { Message = "Login failed: " + ex.Message });
+        //     }
+        // }
+        // In AuthController.cs, modify the Login method
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
@@ -66,13 +95,38 @@ namespace ModularApp.Api.Controllers
 
                 var token = GenerateJwtToken(user);
 
-                return Ok(new { Token = token, User = user });
+                // Start session tracking
+                string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+                string userAgent = Request.Headers["User-Agent"].ToString();
+                var sessionId = await _sessionService.StartSessionAsync(user.Id, ipAddress, userAgent);
+
+                return Ok(new
+                {
+                    Token = token,
+                    User = user,
+                    SessionId = sessionId
+                });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Login failed: " + ex.Message });
             }
         }
+
+        // Add a new endpoint for logout
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout([FromBody] LogoutRequest request)
+        {
+            if (!string.IsNullOrEmpty(request.SessionId))
+            {
+                await _sessionService.EndSessionAsync(request.SessionId);
+            }
+
+            return Ok(new { Message = "Logged out successfully" });
+        }
+
+
         [HttpPost("request-password-reset")]
         public async Task<IActionResult> RequestPasswordReset([FromBody] RequestPasswordResetDto request)
         {
@@ -83,7 +137,7 @@ namespace ModularApp.Api.Controllers
             // 2. Find user by email
             var user = await _userService.FindByEmailAsync(request.Email);
             if (user == null)
-                return Ok(); // Prevent email enumeration
+                return Ok(new { Message = "If your email exists in our system, a password reset link has been sent." }); // Prevent email enumeration
 
             // 3. Generate reset token
             var resetToken = GenerateResetToken();
@@ -93,11 +147,13 @@ namespace ModularApp.Api.Controllers
 
             // 5. Send reset email (you'll implement email service)
             // await _emailService.SendPasswordResetEmail(user.Email, resetToken);
+            await _emailService.SendPasswordResetEmailAsync(user.Email, resetToken);
 
-            return Ok();
+            return Ok(new { Message = "If your email exists in our system, a password reset link has been sent." });
         }
 
         [HttpGet("user-list")]
+        [Authorize]
         public async Task<IActionResult> GetUserList(int page = 1, int limit = 10)
         {
             if (page < 1 || limit < 1)
@@ -166,6 +222,11 @@ namespace ModularApp.Api.Controllers
     {
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+    // Add this class
+    public class LogoutRequest
+    {
+        public string SessionId { get; set; }
     }
 
     public class RequestPasswordResetDto

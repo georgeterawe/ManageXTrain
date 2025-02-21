@@ -1,31 +1,20 @@
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleSideMenu } from '../features/layoutSlice';
-import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import InfoIcon from '@mui/icons-material/Info'; // Updated icon
+import PeopleIcon from '@mui/icons-material/People'; // Updated icon
 import { Link } from 'react-router-dom';
 
-const drawerWidth = 240;
+const drawerWidth = 150;
 
 const openedMixin = (theme) => ({
-  width: 'drawerWidth',
+  // width: 'drawerWidth',
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -46,15 +35,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
-
-// const DrawerHeader = styled('div')(({ theme }) => ({
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'flex-end',
-//     padding: theme.spacing(0, 1),
-//     // necessary for content to be below app bar
-//     ...theme.mixins.toolbar,
-// }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme }) => ({
   width: drawerWidth,
@@ -86,8 +66,7 @@ export default function MiniDrawer() {
   return (
     <Drawer variant="permanent" open={useSelector((state) => state.layout.isSideMenuOpen)}>
       <List>
-        {/* {['About', 'User list'].map((text, index) => ( */}
-        <ListItem key="About" disablePadding sx={{ display: 'block' }}>
+        <ListItem key="About" disablePadding>
           <ListItemButton
             component={Link}
             to="about"
@@ -120,7 +99,7 @@ export default function MiniDrawer() {
                     },
               ]}
             >
-              <InboxIcon />
+              <InfoIcon />
             </ListItemIcon>
             <ListItemText
               primary="About"
@@ -136,7 +115,7 @@ export default function MiniDrawer() {
             />
           </ListItemButton>
         </ListItem>
-        <ListItem key="User list" disablePadding sx={{ display: 'block' }}>
+        <ListItem key="User list" disablePadding>
           <ListItemButton
             component={Link}
             to="users"
@@ -169,7 +148,7 @@ export default function MiniDrawer() {
                     },
               ]}
             >
-              <MailIcon />
+              <PeopleIcon />
             </ListItemIcon>
             <ListItemText
               primary="User list"

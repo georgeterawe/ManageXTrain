@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Table,
   TableBody,
@@ -10,9 +10,50 @@ import {
   Typography,
   CircularProgress,
   Button,
-  Box,
 } from '@mui/material';
+import { styled } from 'styled-components';
 import managexAxios from '../../services/api';
+import MainContainer from '../../components/common/MainContainer';
+
+const StyledTableContainer = styled(TableContainer)`
+  margin: 20px auto;
+  width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledTableHead = styled(TableHead)`
+  background-color: #1976d2;
+  & th {
+    color: white;
+    font-weight: bold;
+  }
+`;
+
+const StyledTableRow = styled(TableRow)`
+  &:nth-of-type(odd) {
+    background-color: #f5f5f5;
+  }
+  &:hover {
+    background-color: #e3f2fd;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  background-color: #1976d2;
+  color: white;
+  &:hover {
+    background-color: #1565c0;
+  }
+`;
+
+const PaginationContainer = styled(MainContainer)`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+`;
 
 const UserListTable = () => {
   const [users, setUsers] = useState([]);
@@ -21,24 +62,28 @@ const UserListTable = () => {
   const [error, setError] = useState('');
   const [totalRecords, setTotalRecords] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const [visibleUsers, setVisibleUsers] = useState([]);
+  const observer = useRef(null);
+
+  const USERS_PER_PAGE = 10;
+  const INITIAL_VISIBLE = 7;
 
   const fetchUsers = async () => {
     setLoading(true);
-    setError(''); // Clear previous error before making a new request
+    setError('');
 
     try {
       const response = await managexAxios.get('/auth/user-list', {
-        params: { page, limit: 10 }, // Adjust limit as needed
+        params: { page, limit: USERS_PER_PAGE },
       });
 
-      const data = response?.data.data || []; // Default to an empty array if data is missing
-      const total = response?.data.total || 0; // Default to 0 if total is missing
-      console.log(data);
-      setUsers((prev) => (page === 1 ? data : [...prev, ...data]));
-      setTotalRecords(total);
+      const data = response?.data.data || [];
+      const total = response?.data.total || 0;
 
-      // FIX: Disable "Next" button when we reach the total number of users
-      setHasMore(page * 10 < total);
+      setUsers(data);
+      setVisibleUsers(data.slice(0, INITIAL_VISIBLE));
+      setTotalRecords(total);
+      setHasMore(page * USERS_PER_PAGE < total);
     } catch (err) {
       console.error('Error fetching users:', err);
       setError(err.response?.data?.message || 'Failed to fetch users. Please try again.');
@@ -51,41 +96,63 @@ const UserListTable = () => {
     fetchUsers();
   }, [page]);
 
+  useEffect(() => {
+    if (!users.length) return;
+
+    observer.current = new IntersectionObserver((entries) => {
+      const lastEntry = entries[0];
+      if (lastEntry.isIntersecting) {
+        setVisibleUsers((prev) => {
+          const nextBatch = users.slice(prev.length, prev.length + 2);
+          return [...prev, ...nextBatch];
+        });
+      }
+    });
+
+    if (observer.current && visibleUsers.length < USERS_PER_PAGE) {
+      observer.current.observe(document.getElementById('loadMoreTrigger'));
+    }
+
+    return () => observer.current?.disconnect();
+  }, [users, visibleUsers]);
+
   const handleNextPage = () => {
     if (hasMore) {
       setPage((prev) => prev + 1);
+      setVisibleUsers([]);
     }
   };
 
   const handlePreviousPage = () => {
     if (page > 1) {
       setPage((prev) => prev - 1);
+      setVisibleUsers([]);
     }
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Typography variant="h6" gutterBottom textAlign="center">
+    <StyledTableContainer component={Paper}>
+      <Typography variant="h6" gutterBottom align="center">
         User List
       </Typography>
       {error && (
-        <Typography color="error" gutterBottom>
+        <Typography color="error" gutterBottom align="center">
           {error}
         </Typography>
       )}
       <Table>
-        <TableHead>
+        <StyledTableHead>
           <TableRow>
             <TableCell>Username</TableCell>
             <TableCell>Email</TableCell>
           </TableRow>
-        </TableHead>
+        </StyledTableHead>
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
+          {visibleUsers.map((user) => (
+            <StyledTableRow key={user.id}>
               <TableCell>{user.username}</TableCell>
               <TableCell>{user.email}</TableCell>
-            </TableRow>
+            </StyledTableRow>
           ))}
           {loading && (
             <TableRow>
@@ -94,27 +161,25 @@ const UserListTable = () => {
               </TableCell>
             </TableRow>
           )}
-          {!hasMore && (
-            <TableRow>
-              <TableCell colSpan={2} align="center">
-                No more users to load.
-              </TableCell>
-            </TableRow>
-          )}
+          <tr id="loadMoreTrigger" style={{ height: '1px' }}></tr>
         </TableBody>
       </Table>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-        <Button variant="contained" disabled={page === 1 || loading} onClick={handlePreviousPage}>
+      <PaginationContainer>
+        <StyledButton
+          variant="contained"
+          disabled={page === 1 || loading}
+          onClick={handlePreviousPage}
+        >
           Previous
-        </Button>
-        <Typography variant="body1" sx={{ alignSelf: 'center' }}>
-          Page {page} of {Math.ceil(totalRecords / 10)} (Total: {totalRecords} users)
+        </StyledButton>
+        <Typography variant="body1">
+          Page {page} of {Math.ceil(totalRecords / USERS_PER_PAGE)} (Total: {totalRecords} users)
         </Typography>
-        <Button variant="contained" disabled={!hasMore || loading} onClick={handleNextPage}>
+        <StyledButton variant="contained" disabled={!hasMore || loading} onClick={handleNextPage}>
           Next
-        </Button>
-      </Box>
-    </TableContainer>
+        </StyledButton>
+      </PaginationContainer>
+    </StyledTableContainer>
   );
 };
 

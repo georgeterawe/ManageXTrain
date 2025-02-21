@@ -1,11 +1,19 @@
-// src/pages/public/ResetPasswordPage.js
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Button, TextField, Typography, Container, Alert } from '@mui/material';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Container,
+  Alert,
+  CircularProgress,
+} from '@mui/material';
 import MainContainer from '../../components/common/MainContainer';
 import FormBox from '../../components/common/FormBox';
 import { ResetPasswordPageContent } from '../../Content/ResetPasswordPage';
+import ManagexAxios from '../../services/api';
 
 const ResetPasswordPage = () => {
   const { token } = useParams();
@@ -17,13 +25,32 @@ const ResetPasswordPage = () => {
     watch,
   } = useForm();
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const password = watch('password', '');
 
-  const onSubmit = (data) => {
-    // We'll integrate with API later
-    console.log(data, token);
-    navigate('/login'); // Temporary redirect for demonstration
+  const onSubmit = async (data) => {
+    try {
+      setLoading(true);
+      setError('');
+
+      const requestBody = {
+        token: token, // Pass token from URL
+        newPassword: data.password, // Pass new password
+      };
+
+      const response = await ManagexAxios.post('/auth/reset-password', requestBody);
+
+      if (response.status === 200) {
+        console.log('Password reset successful');
+        navigate('/login'); // Redirect to login page after success
+      }
+    } catch (err) {
+      console.error('API Error:', err.response?.data);
+      setError(err.response?.data?.message || 'Reset password failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,7 +59,7 @@ const ResetPasswordPage = () => {
         {ResetPasswordPageContent.title}
       </Typography>
 
-      {error && <Alert severity="error" message={error} />}
+      {error && <Alert severity="error">{error}</Alert>}
 
       <FormBox as="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
@@ -68,8 +95,8 @@ const ResetPasswordPage = () => {
           helperText={errors.confirmPassword?.message}
         />
 
-        <Button type="submit" fullWidth variant="contained">
-          {ResetPasswordPageContent.resetPasswordButton}
+        <Button type="submit" fullWidth variant="contained" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : ResetPasswordPageContent.resetPasswordButton}
         </Button>
       </FormBox>
     </MainContainer>
